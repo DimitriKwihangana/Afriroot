@@ -71,6 +71,10 @@ const login = (req, res, next) => {
               res.json({
                 message: "Login successful",
                 token,
+                email,
+                name,
+                phone
+
               });
             } else {
               res.status(401).json({
