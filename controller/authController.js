@@ -47,7 +47,7 @@ const Register = async (req, res, next) => {
 
 const login = (req, res, next) => {
   try {
-    let name = req.body.email || req.body.phone; // Adjust accordingly
+    let name = req.body.email || req.body.phone;
     let password = req.body.password;
 
     if (!name || !password) {
@@ -65,16 +65,17 @@ const login = (req, res, next) => {
                 error: "Internal server error",
               });
             } else if (result) {
-              let token = Jwt.sign({ name: user.name }, "verySecretValue", {
-                expiresIn: "1h",
-              });
+              let token = Jwt.sign(
+                { name: user.name, email: user.email, phone: user.phone },
+                "verySecretValue",
+                { expiresIn: "1h" }
+              );
               res.json({
                 message: "Login successful",
                 token,
-                email,
-                name,
-                phone
-
+                email: user.email,
+                name: user.name,
+                phone: user.phone,
               });
             } else {
               res.status(401).json({
@@ -101,6 +102,7 @@ const login = (req, res, next) => {
     });
   }
 };
+
 
 
 
