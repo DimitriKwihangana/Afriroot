@@ -65,17 +65,22 @@ const login = (req, res, next) => {
                 error: "Internal server error",
               });
             } else if (result) {
+              const userdata = {
+                email: user.email,
+                name: user.name,
+                phone: user.phone,
+              };
+
               let token = Jwt.sign(
                 { name: user.name, email: user.email, phone: user.phone },
                 "verySecretValue",
                 { expiresIn: "1h" }
               );
+
               res.json({
                 message: "Login successful",
                 token,
-                email: user.email,
-                name: user.name,
-                phone: user.phone,
+                userdata,
               });
             } else {
               res.status(401).json({
